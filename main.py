@@ -141,6 +141,7 @@ class Automat:
             s = f.readline().split()
             self.sfin = []
             for i in s:
+                print(search(self.stari, i))
                 (self.sfin).append(self.stari[search(self.stari, i)])
             self.simbolstart = f.readline().replace('\n',"")
             self.tranzitii = {}
@@ -186,17 +187,17 @@ class Automat:
                 #print('stack')
                 return 0
         else:
+            if len(stack) == 0:
+                return 1  # vidarea stivei
+            else:
+                if s in self.sfin:
+                    return 1  # stare finala
+                else:
+                    return 0
             if len(cuvant):
                 #print('stop',s.nume)
                 if(('E',stack[-1]) in self.tranzitii[s].keys()) and (self.tranzitii[s][('E',stack[-1])][1] in self.sfin):
-                    return 2
-                if len(stack) == 0:
-                    return 1        # vidarea stivei
-                else:
-                    if i in self.sfin:
-                        return 2    # stare finala
-                    else:
-                        return 0
+                    return 1
             else:
                 if s in self.sfin:
                     return 1
@@ -285,14 +286,10 @@ class Automat:
                 input_box.setTextColor('lime')
                 output.setText("Cuvant acceptat")
                 output.setTextColor('lime')
-            elif aut.verificare(cuv) == 0:
+            else:
                 input_box.setTextColor('red')
                 output.setText("Cuvant respins")
                 output.setTextColor('red')
-            else:
-                output.setText("Cuvant respins (nodul in care s-a oprit nu e stare finala)")
-                output.setTextColor('red')
-
         win.getMouse()  # Pause to view result
         win.close()  # Close window when done
 
